@@ -104,9 +104,9 @@
         <Button Grid.Row="1" Grid.RowSpan="3" Grid.Column="3" Name="_buttonLeftArrow" Style="{StaticResource StyleLeftArrow}" Click="_buttonLeftArrow_Click"/>
         <Button Grid.Row="1" Grid.RowSpan="3" Grid.Column="7" Name="_buttonRightArrow" Style="{StaticResource StyleRightArrow}" Click="_buttonRightArrow_Click"/>
         <Button Grid.Row="1" Grid.RowSpan="3" Grid.Column="9" Name="_buttonRightManyArrow" Style="{StaticResource StyleRightArrow}" Click="_buttonRightManyArrow_Click"/>
-        <Label Grid.Row="1" Grid.Column="5" Content="{Binding SelectedRadioStationDAB.Name}" FontSize="32" Foreground="White" HorizontalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="5" Content="{Binding SelectedRadioStationDAB.Text}" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
-        <WPFCarouselControl:CarouselControl Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="5" x:Name="_carouselDABRadioStations" ItemsSource="{Binding RadioStationsDAB}" SelectedItem="{Binding SelectedRadioStationDAB,Mode=TwoWay}" ShowRotation="True"  TiltInDegrees="10" AutoSizeToParent="true" RotationSpeed="100" VerticalOrientation="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Label Grid.Row="1" Grid.Column="5" Content="{Binding SelectedGameInfo.Name}" FontSize="32" Foreground="White" HorizontalAlignment="Center"/>
+        <Label Grid.Row="3" Grid.Column="5" Content="{Binding SelectedGameInfo.Text}" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
+        <WPFCarouselControl:CarouselControl Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="5" x:Name="_carouselDABRadioStations" ItemsSource="{Binding GameInfoCollection}" SelectedItem="{Binding SelectedGameInfo,Mode=TwoWay}" ShowRotation="True"  TiltInDegrees="10" AutoSizeToParent="true" RotationSpeed="100" VerticalOrientation="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <WPFCarouselControl:CarouselControl.Style>
                 <Style TargetType="WPFCarouselControl:CarouselControl">
                     <Setter Property="CarouselItemTemplate" >
@@ -117,11 +117,14 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="30"/>
+                                            <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
+                                        
                                         <Border Grid.Row="0" BorderThickness="0" Background="White">
                                             <Image Grid.Row="0" Source="{Binding ImageSource}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="100"/>
                                         </Border>
                                         <Label Grid.Row="1" Content="{Binding ShortName}" Foreground="White" Background="Transparent" FontSize="20" FontFamily="Arial" Style="{StaticResource labelStyleCentred}" DockPanel.Dock="Bottom" Height="Auto"/>
+                                        <Label Grid.Row="2" Content="help"/>
                                     </Grid>
                                 </Border>
                             </ControlTemplate>
@@ -139,8 +142,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <CheckBox Grid.Row="0" Grid.Column="0" Name="_checkBoxVerticalCarousel" Content="Vertical Carousel" IsChecked="{Binding VerticalCarousel}" Click="_checkBoxVerticalCarousel_Click"/>
-            <Button Grid.Row="0" Grid.Column="2" Name="_buttonDelete" Content="Delete" Click="_buttonDelete_Click" Padding="4" Width="80"/>
+           
         </Grid>
     </Grid>
 </Window>

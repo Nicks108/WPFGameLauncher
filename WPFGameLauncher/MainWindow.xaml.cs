@@ -6,9 +6,12 @@ using System.IO;
 using System.Reflection;
 using System.Resources;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Interop;
 using WpfCarouselDemo;
 using WPFGameLauncher.Model;
+using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
+using MessageBox = System.Windows.MessageBox;
 
 namespace WPFGameLauncher
 {
@@ -39,7 +42,7 @@ namespace WPFGameLauncher
                 using (StreamWriter sw = File.CreateText(SettingsFileAndLocation))
                 {
                     //get initial settigns
-                    Window1 SettingsWindow = new Window1(ref settings);
+                    SettingsWindow SettingsWindow = new SettingsWindow(ref settings);
                     SettingsWindow.ShowDialog();
 
                     //save settings
@@ -63,32 +66,41 @@ namespace WPFGameLauncher
 
     public class Settings
     {
-        public string GameLibRootDir;
+        public string GameLibRootDir { get; set; }
     }
 
 
     public partial class MainWindow : Window
     {
-       
+        SettingsManager settingsManager = new SettingsManager();
 
         public MainWindow()
         {
-            
 
             InitializeComponent();
-            
+
+
 
             //make new settigns manager
-            SettingsManager settingsManager = new SettingsManager();
+            
 
             string[] GameDirs = GetAllSubDirsFromPath(settingsManager.settings.GameLibRootDir);
             System.Collections.ObjectModel.ObservableCollection<Model.GameInfo> gameInfoCollection = new ObservableCollection<GameInfo>();
             foreach (string gameDir in GameDirs)
             {
-                using (FileStream FS = new FileStream(gameDir+"GameInfo.json", FileMode.Open))
+                try
                 {
-                    gameInfoCollection.Add(System.Text.Json.JsonSerializer.Deserialize<GameInfo>(FS));
+                    using (FileStream FS = new FileStream(gameDir +"\\"+ "GameInfo.json", FileMode.Open))
+                    {
+                        gameInfoCollection.Add(System.Text.Json.JsonSerializer.Deserialize<GameInfo>(FS));
+                    }
                 }
+                catch (Exception ex)
+                {
+                    string msg = ex.Message;
+                }
+
+
 
                 
             }
@@ -96,7 +108,7 @@ namespace WPFGameLauncher
 
             DataContext = new ViewModel.MainViewModel(gameInfoCollection);
             ViewModel.MainViewModel viewModel = DataContext as ViewModel.MainViewModel;
-
+            
 
 
 
@@ -105,6 +117,27 @@ namespace WPFGameLauncher
             this.WindowState = WindowState.Maximized;
             this.WindowStyle = WindowStyle.None;
 
+            this.PreviewKeyDown += new KeyEventHandler(OnButtonKeyDown);
+
+        }
+
+        private void OnButtonKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Space:
+                        MessageBox.Show(e.Key.ToString());
+                        var viewModel = DataContext as ViewModel.MainViewModel;
+                        Process.Start(settingsManager.settings.GameLibRootDir + "\\" + viewModel.SelectedGameInfo.RelativeEXELocation);
+                        //Process.Start(@"C:\Windows\notepad.exe");
+                    break;
+                case Key.Left:
+                    _carouselDABRadioStations.RotateLeft();
+                    break;
+                case Key.Right:
+                    _carouselDABRadioStations.RotateRight();
+                    break;
+            }
         }
 
         string[] GetAllSubDirsFromPath(string Path)
@@ -135,7 +168,7 @@ namespace WPFGameLauncher
 
         private void _checkBoxVerticalCarousel_Click(object sender, RoutedEventArgs e)
         {
-            _carouselDABRadioStations.VerticalOrientation = _checkBoxVerticalCarousel.IsChecked.HasValue ? _checkBoxVerticalCarousel.IsChecked.Value : false;
+            //_carouselDABRadioStations.VerticalOrientation = _checkBoxVerticalCarousel.IsChecked.HasValue ? _checkBoxVerticalCarousel.IsChecked.Value : false;
         }
 
         private void _buttonLeftManyArrow_Click(object sender, RoutedEventArgs e)
@@ -148,16 +181,16 @@ namespace WPFGameLauncher
             _carouselDABRadioStations.RotateIncrement(5);
         }
 
-        private void _buttonDelete_Click(object sender, RoutedEventArgs e)
-        {
-            var viewModel = DataContext as ViewModel.MainViewModel;
-            if (viewModel == null)
-            {
-                return;
-            }
+        //private void _buttonDelete_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var viewModel = DataContext as ViewModel.MainViewModel;
+        //    if (viewModel == null)
+        //    {
+        //        return;
+        //    }
 
-            viewModel.Delete();
-        }
+        //    viewModel.Delete();
+        //}
 
 
 

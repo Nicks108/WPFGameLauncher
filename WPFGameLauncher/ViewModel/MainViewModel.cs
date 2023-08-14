@@ -41,7 +41,10 @@ namespace WPFGameLauncher.ViewModel
         public MainViewModel(System.Collections.ObjectModel.ObservableCollection<Model.GameInfo> gameInfoCollection)
         {
             GameInfoCollection = gameInfoCollection;
-            SelectedGameInfo = GameInfoCollection[0];
+            if (GameInfoCollection.Count > 0)
+            {
+                SelectedGameInfo = GameInfoCollection[0];
+            }
         }
 
         // Delete the selected item

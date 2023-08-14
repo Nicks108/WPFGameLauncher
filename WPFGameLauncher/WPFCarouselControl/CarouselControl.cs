@@ -772,6 +772,9 @@ namespace WpfCarouselDemo.WPFCarouselControl
 
         public void RotateIncrement(int increment)
         {
+            if(_timer.IsEnabled)
+                return;
+
             int requiredIndex = 1;
             if (SelectedItem != null)
             {
