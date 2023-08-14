@@ -1,0 +1,8 @@
+		{
+            "Name":"name",
+            "ShortName":"ShortNaem",
+            "ImageSource":"ImageLocation",
+            "Text":"text",
+            "GameFolderLocation":"GameFolderLocation",
+            "RelativeEXELocation":"RelativeEXELocation"
+        }

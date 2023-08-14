@@ -1,25 +1,115 @@
 ﻿using System.Runtime.InteropServices;
 using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Resources;
 using System.Windows;
 using System.Windows.Interop;
+using WpfCarouselDemo;
+using WPFGameLauncher.Model;
 
 namespace WPFGameLauncher
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+
+
+    public class SettingsManager
+    {
+        readonly string CurrentDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        const string SettingsFile = "Settings.json";
+
+        public Settings settings = new Settings();
+
+        string SettingsFileAndLocation
+        {
+            get { return CurrentDirectory + "//" + SettingsFile; }
+        }
+        public SettingsManager()
+        {
+            
+            //check for existing settings file
+            if (!File.Exists(SettingsFileAndLocation)) // if no settings
+            {
+                //show first time setup
+                //setting
+                using (StreamWriter sw = File.CreateText(SettingsFileAndLocation))
+                {
+                    //get initial settigns
+                    Window1 SettingsWindow = new Window1(ref settings);
+                    SettingsWindow.ShowDialog();
+
+                    //save settings
+                    string settingToJson = System.Text.Json.JsonSerializer.Serialize(settings);
+                    sw.Write(settingToJson);
+                }
+
+            }
+            else
+            {
+                //if settings exists, read settings from file.
+                using (StreamReader SR = File.OpenText(SettingsFileAndLocation))
+                {
+                    settings = System.Text.Json.JsonSerializer.Deserialize<Settings>(SR.ReadToEnd());
+                }
+
+            }
+        }
+
+    }
+
+    public class Settings
+    {
+        public string GameLibRootDir;
+    }
+
+
     public partial class MainWindow : Window
     {
+       
+
         public MainWindow()
         {
-            InitializeComponent();
+            
 
-            DataContext = new ViewModel.MainViewModel();
+            InitializeComponent();
+            
+
+            //make new settigns manager
+            SettingsManager settingsManager = new SettingsManager();
+
+            string[] GameDirs = GetAllSubDirsFromPath(settingsManager.settings.GameLibRootDir);
+            System.Collections.ObjectModel.ObservableCollection<Model.GameInfo> gameInfoCollection = new ObservableCollection<GameInfo>();
+            foreach (string gameDir in GameDirs)
+            {
+                using (FileStream FS = new FileStream(gameDir+"GameInfo.json", FileMode.Open))
+                {
+                    gameInfoCollection.Add(System.Text.Json.JsonSerializer.Deserialize<GameInfo>(FS));
+                }
+
+                
+            }
+
+
+            DataContext = new ViewModel.MainViewModel(gameInfoCollection);
+            ViewModel.MainViewModel viewModel = DataContext as ViewModel.MainViewModel;
+
+
+
 
             _carouselDABRadioStations.SelectionChanged += _carouselDABRadioStations_SelectionChanged;
 
+            this.WindowState = WindowState.Maximized;
+            this.WindowStyle = WindowStyle.None;
 
+        }
 
+        string[] GetAllSubDirsFromPath(string Path)
+        {
+            return Directory.GetDirectories(Path, "*", SearchOption.TopDirectoryOnly);
         }
 
         private void _carouselDABRadioStations_SelectionChanged(FrameworkElement selectedElement)
@@ -30,7 +120,7 @@ namespace WPFGameLauncher
                 return;
             }
 
-            viewModel.SelectedRadioStationDAB = selectedElement.DataContext as Model.RadioStation;
+            viewModel.SelectedGameInfo = selectedElement.DataContext as Model.GameInfo;
         }
 
         private void _buttonLeftArrow_Click(object sender, RoutedEventArgs e)
@@ -100,7 +190,7 @@ namespace WPFGameLauncher
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(HwndHook);
 
-            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_SHIFT, VK_ESCAPE); //CTRL + CAPS_LOCK
+            RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_SHIFT, VK_ESCAPE); //SHIFT + ESC
         }
 
         //check to see which msg was passed and which key was pressed ( if key was pressed)
