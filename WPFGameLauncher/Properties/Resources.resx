@@ -118,46 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BBCRadio1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio1Extra" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio1Extra.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio3.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio4.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio4Extra" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio4Extra.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio5Live" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio5Live.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio5LiveSports" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio5LiveSports.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadio6Music" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadio6Music.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="BBCRadioAsianNetwork" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BBCRadioAsianNetwork.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="CapitalFM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\CapitalFM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Heart" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Heart.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="JazzFM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\JazzFM.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="JazzFM1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\JazzFM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="JoyStickIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\joystick-game-controllers.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

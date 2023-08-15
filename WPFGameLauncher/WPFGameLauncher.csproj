@@ -15,6 +15,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,7 +86,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\GameInfo.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewModel\MainViewModel.cs" />
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -115,11 +122,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -127,6 +129,7 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -142,46 +145,12 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\BBCRadio1.jpg" />
+    <Resource Include="Resources\joystick-game-controllers.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\BBCRadio1Extra.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio2.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio3.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio4.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio4Extra.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio5Live.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio5LiveSports.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadio6Music.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\BBCRadioAsianNetwork.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\CapitalFM.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Heart.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\JazzFM.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\JazzFM.png" />
+    <Content Include="Resources\Background_Vid.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

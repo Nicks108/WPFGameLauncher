@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace WPFGameLauncher.Model
@@ -15,6 +16,12 @@ namespace WPFGameLauncher.Model
         public string Text { get; set; }
         public string GameFolderLocation { get; set; }
         public string RelativeEXELocation { get; set; }
+
+        [JsonIgnore]
+        public string GetImageAbsolutePath
+        {
+            get { return GameFolderLocation + "//" + ImageSource; }
+        }
 
         public GameInfo() { }
         public GameInfo(string name, string shortName, string imageSource, string text, string gameFolderLocation, string relativeEXELocation)

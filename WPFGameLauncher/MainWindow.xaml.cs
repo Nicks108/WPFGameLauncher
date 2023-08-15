@@ -5,13 +5,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.Remoting.Channels;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+
 using WpfCarouselDemo;
 using WPFGameLauncher.Model;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
+using System.Windows.Media;
+using System.Windows.Controls;
+
 
 namespace WPFGameLauncher
 {
@@ -73,16 +78,15 @@ namespace WPFGameLauncher
     public partial class MainWindow : Window
     {
         SettingsManager settingsManager = new SettingsManager();
-
+        
         public MainWindow()
         {
 
             InitializeComponent();
 
 
-
             //make new settigns manager
-            
+
 
             string[] GameDirs = GetAllSubDirsFromPath(settingsManager.settings.GameLibRootDir);
             System.Collections.ObjectModel.ObservableCollection<Model.GameInfo> gameInfoCollection = new ObservableCollection<GameInfo>();
@@ -92,7 +96,9 @@ namespace WPFGameLauncher
                 {
                     using (FileStream FS = new FileStream(gameDir +"\\"+ "GameInfo.json", FileMode.Open))
                     {
-                        gameInfoCollection.Add(System.Text.Json.JsonSerializer.Deserialize<GameInfo>(FS));
+                        GameInfo GI = System.Text.Json.JsonSerializer.Deserialize<GameInfo>(FS);
+                        GI.GameFolderLocation = gameDir;
+                        gameInfoCollection.Add(GI);
                     }
                 }
                 catch (Exception ex)
@@ -119,23 +125,37 @@ namespace WPFGameLauncher
 
             this.PreviewKeyDown += new KeyEventHandler(OnButtonKeyDown);
 
+
+
+            //var videoPath = Directory.GetCurrentDirectory();
+            //mediaElement.Source = new Uri(videoPath + @"\Resources\Background_Vid.wmv", UriKind.Relative);
+            //mediaElement.Play();
         }
+
+     
+
+
+
 
         private void OnButtonKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             switch (e.Key)
             {
                 case Key.Space:
-                        MessageBox.Show(e.Key.ToString());
+                        //MessageBox.Show(e.Key.ToString());
                         var viewModel = DataContext as ViewModel.MainViewModel;
-                        Process.Start(settingsManager.settings.GameLibRootDir + "\\" + viewModel.SelectedGameInfo.RelativeEXELocation);
+                        string ExeLoc = viewModel.SelectedGameInfo.GameFolderLocation +"/"+
+                                       viewModel.SelectedGameInfo.RelativeEXELocation;
+                        Process.Start(ExeLoc);
                         //Process.Start(@"C:\Windows\notepad.exe");
                     break;
                 case Key.Left:
-                    _carouselDABRadioStations.RotateLeft();
+                    //_carouselDABRadioStations.RotateLeft();
+                    _buttonLeftArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     break;
                 case Key.Right:
-                    _carouselDABRadioStations.RotateRight();
+                    //_carouselDABRadioStations.RotateRight();
+                    _buttonRightArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
                     break;
             }
         }
@@ -171,15 +191,6 @@ namespace WPFGameLauncher
             //_carouselDABRadioStations.VerticalOrientation = _checkBoxVerticalCarousel.IsChecked.HasValue ? _checkBoxVerticalCarousel.IsChecked.Value : false;
         }
 
-        private void _buttonLeftManyArrow_Click(object sender, RoutedEventArgs e)
-        {
-            _carouselDABRadioStations.RotateIncrement(-5);
-        }
-
-        private void _buttonRightManyArrow_Click(object sender, RoutedEventArgs e)
-        {
-            _carouselDABRadioStations.RotateIncrement(5);
-        }
 
         //private void _buttonDelete_Click(object sender, RoutedEventArgs e)
         //{
@@ -252,6 +263,7 @@ namespace WPFGameLauncher
         //clean up
         protected override void OnClosed(EventArgs e)
         {
+         
             _source.RemoveHook(HwndHook);
             UnregisterHotKey(_windowHandle, HOTKEY_ID);
             base.OnClosed(e);
