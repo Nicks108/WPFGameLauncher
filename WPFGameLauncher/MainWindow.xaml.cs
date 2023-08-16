@@ -132,31 +132,34 @@ namespace WPFGameLauncher
             //mediaElement.Play();
         }
 
-     
 
-
-
+        private Process GameProcess = null;
 
         private void OnButtonKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            switch (e.Key)
+            if (GameProcess == null)
             {
-                case Key.Space:
+                switch (e.Key)
+                {
+                    case Key.Space:
                         //MessageBox.Show(e.Key.ToString());
+                        
                         var viewModel = DataContext as ViewModel.MainViewModel;
-                        string ExeLoc = viewModel.SelectedGameInfo.GameFolderLocation +"/"+
-                                       viewModel.SelectedGameInfo.RelativeEXELocation;
-                        Process.Start(ExeLoc);
+                        string ExeLoc = viewModel.SelectedGameInfo.GameFolderLocation + "/" +
+                                        viewModel.SelectedGameInfo.RelativeEXELocation;
+                        GameProcess = Process.Start(ExeLoc);
+                        LoadingIndicator.SetCurrentValue(LoadingIndicators.WPF.LoadingIndicator.IsActiveProperty, true);
                         //Process.Start(@"C:\Windows\notepad.exe");
-                    break;
-                case Key.Left:
-                    //_carouselDABRadioStations.RotateLeft();
-                    _buttonLeftArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    break;
-                case Key.Right:
-                    //_carouselDABRadioStations.RotateRight();
-                    _buttonRightArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
-                    break;
+                        break;
+                    case Key.Left:
+                        //_carouselDABRadioStations.RotateLeft();
+                        _buttonLeftArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                    case Key.Right:
+                        //_carouselDABRadioStations.RotateRight();
+                        _buttonRightArrow.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                        break;
+                }
             }
         }
 
@@ -250,7 +253,14 @@ namespace WPFGameLauncher
                             int vkey = (((int)lParam >> 16) & 0xFFFF);
                             if (vkey == VK_ESCAPE)
                             {
-                                MessageBox.Show("shift esc was pressed" + Environment.NewLine);
+                                if (GameProcess != null)
+                                {
+                                    //MessageBox.Show("shift esc was pressed" + Environment.NewLine);
+                                    GameProcess.Kill();
+                                    GameProcess = null;
+                                    //LoadingIndicator.IsActive = false;
+                                    LoadingIndicator.SetCurrentValue(LoadingIndicators.WPF.LoadingIndicator.IsActiveProperty, false);
+                                }
                             }
                             handled = true;
                             break;

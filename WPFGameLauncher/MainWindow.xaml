@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:WPFCarouselControl="clr-namespace:WpfCarouselDemo.WPFCarouselControl"
-        
+        xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls"
         mc:Ignorable="d"
         Title="WPFGameLauncher" Height="450" Width="800">
     <Window.Background>
@@ -64,7 +64,22 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
                             <Grid >
-                                <Polygon Name="_polygon" Points="120,0 120,160 0,80" Fill="{TemplateBinding Background}" Stroke="Gainsboro" StrokeThickness="1" />
+                                <Polygon Name="_polygon" Points="120,0 120,160 0,80" StrokeThickness="4" >
+                                    <Polygon.Stroke>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF3E3E3E" Offset="1"/>
+                                            <GradientStop Color="White" Offset="0"/>
+                                        </LinearGradientBrush>
+                                    </Polygon.Stroke>
+                                    <Polygon.Fill>
+                                        <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                                            <GradientStop Color="#FF45CAED"/>
+                                            <GradientStop Color="#FF121CAF" Offset="0.572"/>
+                                            <GradientStop Color="#FF00137D" Offset="1"/>
+                                            <GradientStop Color="#FF190B79" Offset="0.499"/>
+                                        </LinearGradientBrush>
+                                    </Polygon.Fill>
+                                </Polygon>
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
@@ -104,7 +119,6 @@
         </ResourceDictionary>
     </Window.Resources>
 
-
     <Grid>
 
         <Grid.RowDefinitions>
@@ -128,6 +142,27 @@
 
         </Grid.ColumnDefinitions>
 
+        <!--<Image
+            Source="/images/spinner.png"
+            Width="100"
+            Height="100"
+            RenderTransformOrigin="0.5, 0.5" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Image.RenderTransform>
+                <RotateTransform x:Name="noFreeze" />
+            </Image.RenderTransform>
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="(Image.RenderTransform).(RotateTransform.Angle)"
+                                To="360" Duration="0:0:1" RepeatBehavior="Forever" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>-->
+
 
 
         <Button Grid.Row="5"   Grid.Column="1" Name="_buttonLeftArrow" Style="{StaticResource StyleLeftArrow}" Click="_buttonLeftArrow_Click"  RenderTransformOrigin="0.5,0.5" >
@@ -149,7 +184,8 @@
                                 Storyboard.TargetName="LeftScaleTransform"
                                 Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
                                 To="2" From="1" Duration="0:0:0.1" AutoReverse="True"
-                                  /><DoubleAnimation
+                                  />
+                            <DoubleAnimation
                                 Storyboard.TargetName="LeftScaleTransform"
                                 Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
                                 To="2" From="1" Duration="0:0:0.1" AutoReverse="True"
@@ -177,7 +213,8 @@
                                 Storyboard.TargetName="RightScaleTransform"
                                 Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
                                 To="2" From="1" Duration="0:0:0.1" AutoReverse="True"
-                            /><DoubleAnimation
+                            />
+                            <DoubleAnimation
                                 Storyboard.TargetName="RightScaleTransform"
                                 Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
                                 To="2" From="1" Duration="0:0:0.1" AutoReverse="True"
@@ -188,27 +225,63 @@
             </Button.Triggers>
         </Button>
 
-        <Label Grid.Row="1" Grid.Column="2"  Content="{Binding SelectedGameInfo.Name}" FontSize="32" Foreground="White" HorizontalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="2" Content="{Binding SelectedGameInfo.Text}" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
+        <Border BorderThickness="4" Grid.Row="1" Grid.Column="2" Grid.RowSpan="3">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="#FF45CAED"/>
+                    <GradientStop Color="#FF121CAF" Offset="0.572"/>
+                    <GradientStop Color="#FF00137D" Offset="1"/>
+                    <GradientStop Color="#FF190B79" Offset="0.499"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF3E3E3E" Offset="1"/>
+                    <GradientStop Color="White" Offset="0"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <StackPanel  >
+                <Label Content="{Binding SelectedGameInfo.Name}" FontSize="32" Foreground="White" HorizontalAlignment="Center"/>
+                <Label Content="{Binding SelectedGameInfo.Text}" FontSize="20" Foreground="White" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+
+
         <WPFCarouselControl:CarouselControl Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="5" x:Name="_carouselDABRadioStations" ItemsSource="{Binding GameInfoCollection}" SelectedItem="{Binding SelectedGameInfo,Mode=TwoWay}" ShowRotation="True"  TiltInDegrees="10" AutoSizeToParent="true" RotationSpeed="100" VerticalOrientation="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <WPFCarouselControl:CarouselControl.Style>
                 <Style TargetType="WPFCarouselControl:CarouselControl">
                     <Setter Property="CarouselItemTemplate" >
                         <Setter.Value>
                             <ControlTemplate>
-                                <Border BorderThickness="1" BorderBrush="Gainsboro" Background="SteelBlue" Width="250" Height="150">
+                                <Border BorderThickness="4" Width="500" Height="300">
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                                            <GradientStop Color="#FF45CAED"/>
+                                            <GradientStop Color="#FF121CAF" Offset="0.572"/>
+                                            <GradientStop Color="#FF00137D" Offset="1"/>
+                                            <GradientStop Color="#FF190B79" Offset="0.499"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF3E3E3E" Offset="1"/>
+                                            <GradientStop Color="White" Offset="0"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+
+
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="30"/>
                                             <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
+                                        <Border>
 
-                                        <Border Grid.Row="0" BorderThickness="0" Background="White">
-                                            <Image Grid.Row="0" Source="{Binding GetImageAbsolutePath}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="100"/>
                                         </Border>
-                                        <Label Grid.Row="1" Content="{Binding ShortName}" Foreground="White" Background="Transparent" FontSize="20" FontFamily="Arial" Style="{StaticResource labelStyleCentred}" DockPanel.Dock="Bottom" Height="Auto"/>
-                                        <Label Grid.Row="2" Content="help"/>
+                                        <Image Grid.Row="0" Source="{Binding GetImageAbsolutePath}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="200"/>
+                                        <Label Grid.Row="1" Content="{Binding ShortName}" Foreground="White" Background="Transparent" FontSize="30" FontFamily="Arial" Style="{StaticResource labelStyleCentred}" DockPanel.Dock="Bottom" Height="Auto"/>
                                     </Grid>
                                 </Border>
                             </ControlTemplate>
@@ -228,5 +301,25 @@
             </Grid.ColumnDefinitions>
 
         </Grid>
+        <li:LoadingIndicator x:Name="LoadingIndicator"  Grid.Row="5" Grid.Column="2" SpeedRatio="1" IsActive="False" Mode="Arcs" RenderTransformOrigin="0.5,0.5" >
+            
+            <li:LoadingIndicator.Foreground>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="#FF190B79" Offset="1"/>
+                    <GradientStop Color="#FF888EE6" Offset="0.439"/>
+                    <GradientStop Color="#FF00137D" Offset="0"/>
+                    <GradientStop Color="#FF45CAED" Offset="1"/>
+                    <GradientStop Color="#FFA7ABF3" Offset="0.583"/>
+                </LinearGradientBrush>
+            </li:LoadingIndicator.Foreground>
+            <li:LoadingIndicator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="5" ScaleY="4.85"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </li:LoadingIndicator.RenderTransform>
+        </li:LoadingIndicator>
     </Grid>
 </Window>
