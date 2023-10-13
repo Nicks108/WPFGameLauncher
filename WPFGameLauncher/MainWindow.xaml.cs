@@ -135,12 +135,51 @@ namespace WPFGameLauncher
 
         private Process GameProcess = null;
 
+        //https://www.ultimarc.com/control-interfaces/i-pacs/i-pac4-board/  (maybe not)
+
+        //p1 = 1 
+        //p2 = 2
+
+        //player 1:
+
+        //up = up arrow
+        //down = down arrow
+        //left = left arrow
+        //right = right arrow
+
+        //top row
+        //  q
+        //  w
+        //  e
+
+        //bottom row
+        //  a
+        //  s
+        //  d
+
+        //player 2:
+
+        //  up = t
+        //  down = g
+        //  left = f
+        //  right = h
+
+        //top row:
+        //  u
+        //  i
+        //  o
+
+        //bottom row
+        //  j
+        //  k
+        //  l
         private void OnButtonKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (GameProcess == null)
             {
                 switch (e.Key)
                 {
+                    case Key.Q:
                     case Key.Space:
                         //MessageBox.Show(e.Key.ToString());
                         
@@ -216,6 +255,7 @@ namespace WPFGameLauncher
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private const int HOTKEY_ID = 9000;
+        private const int HOTKEY_ID_X = 9001;
 
         //Modifiers:
         //private const uint MOD_NONE = 0x0000; //(none)
@@ -225,6 +265,7 @@ namespace WPFGameLauncher
         //private const uint MOD_WIN = 0x0008; //WINDOWS
         //private const uint VK_CAPITAL = 0x14; //CAPS LOCK:
         private const uint VK_ESCAPE = 0x1B; //ESC key
+        private const uint VK_x = 0x58; //x key
         private IntPtr _windowHandle;
         private HwndSource _source;
 
@@ -237,6 +278,7 @@ namespace WPFGameLauncher
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(HwndHook);
 
+            RegisterHotKey(_windowHandle, HOTKEY_ID_X, 0, VK_x); //SHIFT + ESC
             RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_SHIFT, VK_ESCAPE); //SHIFT + ESC
         }
 
@@ -249,13 +291,15 @@ namespace WPFGameLauncher
                 case WM_HOTKEY:
                     switch (wParam.ToInt32())
                     {
+                        case HOTKEY_ID_X:
                         case HOTKEY_ID:
                             int vkey = (((int)lParam >> 16) & 0xFFFF);
-                            if (vkey == VK_ESCAPE)
-                            {
+                            if (vkey == VK_ESCAPE || vkey == VK_x)
+
+                {
                                 if (GameProcess != null)
                                 {
-                                    //MessageBox.Show("shift esc was pressed" + Environment.NewLine);
+                                    //MessageBox.Show(" esc/x was pressed" + Environment.NewLine);
                                     GameProcess.Kill();
                                     GameProcess = null;
                                     //LoadingIndicator.IsActive = false;
